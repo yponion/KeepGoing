@@ -388,5 +388,11 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        // 점프 패드 기능 추가
+        public void AddJumpForce(float jumpForce)
+        {
+            _verticalVelocity = jumpForce;
+        }
     }
 }
