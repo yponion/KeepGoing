@@ -110,6 +110,10 @@ namespace StarterAssets
 
         private bool _hasAnimator;
 
+        // 슬로우 모션 관련 변수
+        private float _normalTimeScale = 1f;
+        private float _slowMotionTimeScale = 0.2f;
+
         private bool IsCurrentDeviceMouse
         {
             get
@@ -159,6 +163,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            HandleSlowMotion();
         }
 
         private void LateUpdate()
@@ -393,6 +398,19 @@ namespace StarterAssets
         public void AddJumpForce(float jumpForce)
         {
             _verticalVelocity = jumpForce;
+        }
+
+        // 슬로우 모션 처리
+        private void HandleSlowMotion()
+        {
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+            {
+                Time.timeScale = _slowMotionTimeScale;
+            }
+                else
+                {
+                    Time.timeScale = _normalTimeScale;
+                }
         }
     }
 }
