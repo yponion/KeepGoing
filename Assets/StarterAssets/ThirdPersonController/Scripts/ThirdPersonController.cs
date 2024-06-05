@@ -403,7 +403,7 @@ namespace StarterAssets
         // 슬로우 모션 처리
         private void HandleSlowMotion()
         {
-            if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+            if (GameManager.isAltEnabled && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
             {
                 Time.timeScale = _slowMotionTimeScale;
             }
