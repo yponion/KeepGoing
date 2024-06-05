@@ -1,4 +1,5 @@
 ﻿ using UnityEngine;
+using System.Collections.Generic;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -114,6 +115,13 @@ namespace StarterAssets
         private float _normalTimeScale = 1f;
         private float _slowMotionTimeScale = 0.2f;
 
+        // 상태 저장을 위한 변수 추가
+        private Queue<CharacterState> _stateQueue = new Queue<CharacterState>();
+        public GameObject ghostPrefab; // 잔상 캐릭터 프리팹
+        private GameObject _ghost;
+        private Animator _ghostAnimator;
+
+
         private bool IsCurrentDeviceMouse
         {
             get
@@ -154,6 +162,25 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+
+            if (GameManager.isCtrlEnabled)
+            {
+                if (ghostPrefab != null)
+                {
+                    _ghost = Instantiate(ghostPrefab, transform.position, transform.rotation);
+                    _ghostAnimator = _ghost.GetComponent<Animator>();
+
+                    if (_ghostAnimator == null)
+                    {
+                        Debug.LogError("Ghost prefab does not have an Animator component.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Ghost prefab is not assigned.");
+                }
+            }
         }
 
         private void Update()
@@ -164,6 +191,15 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             HandleSlowMotion();
+
+            if (GameManager.isCtrlEnabled){
+                // 캐릭터 상태 저장
+                SaveState();
+                // 잔상 상태 적용
+                ApplyGhostState();
+                // 잔상으로 이동
+                HandleAbilityUse();
+            }
         }
 
         private void LateUpdate()
@@ -411,6 +447,70 @@ namespace StarterAssets
                 {
                     Time.timeScale = _normalTimeScale;
                 }
+        }
+
+        
+        private void SaveState()
+        {
+            Dictionary<string, float> animationParameters = new Dictionary<string, float>();
+            if (_hasAnimator)
+            {
+                animationParameters["Speed"] = _animator.GetFloat(_animIDSpeed);
+                animationParameters["Grounded"] = _animator.GetBool(_animIDGrounded) ? 1f : 0f;
+                animationParameters["Jump"] = _animator.GetBool(_animIDJump) ? 1f : 0f;
+                animationParameters["FreeFall"] = _animator.GetBool(_animIDFreeFall) ? 1f : 0f;
+                animationParameters["MotionSpeed"] = _animator.GetFloat(_animIDMotionSpeed);
+            }
+
+            _stateQueue.Enqueue(new CharacterState(transform.position, transform.rotation, animationParameters));
+
+            if (_stateQueue.Count > 1800) // assuming 60 updates per second, 180 updates represent 3 seconds
+            {
+                _stateQueue.Dequeue();
+            }
+        }
+
+        private void ApplyGhostState()
+        {
+            if (_stateQueue.Count >= 1800 && _ghostAnimator != null)
+            {
+                CharacterState ghostState = _stateQueue.Peek();
+                _ghost.transform.position = ghostState.Position;
+                _ghost.transform.rotation = ghostState.Rotation;
+
+                // 잔상의 애니메이션 상태 적용
+                foreach (var param in ghostState.AnimationParameters)
+                {
+                    if (param.Key == "Grounded" || param.Key == "Jump" || param.Key == "FreeFall")
+                    {
+                        _ghostAnimator.SetBool(param.Key, param.Value > 0.5f);
+                    }
+                    else
+                    {
+                        _ghostAnimator.SetFloat(param.Key, param.Value);
+                    }
+                }
+            }
+        }
+
+        private void HandleAbilityUse()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                if (_stateQueue.Count >= 1800)
+                {
+                    CharacterState ghostState = _stateQueue.Peek();   
+
+                    // CharacterController 비활성화
+                    _controller.enabled = false;
+
+                    transform.position = ghostState.Position;
+                    transform.rotation = ghostState.Rotation;
+
+                    // CharacterController 다시 활성화
+                    _controller.enabled = true;
+                }
+            }
         }
     }
 }

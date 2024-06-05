@@ -3411,6 +3411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6976181540923187018}
   - component: {fileID: 8386253144293996160}
+  - component: {fileID: 6394512929998538421}
   m_Layer: 0
   m_Name: Afterimage
   m_TagString: Untagged
@@ -3472,6 +3473,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6394512929998538421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056391806269151875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26885b89e93f46b9b4206b357924b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FootstepAudioClips: []
+  FootstepAudioVolume: 0.5
+  LandingAudioClip: {fileID: 0}
 --- !u!1 &8280779698599279546
 GameObject:
   m_ObjectHideFlags: 0
