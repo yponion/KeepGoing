@@ -122,6 +122,9 @@ namespace StarterAssets
         private Animator _ghostAnimator;
 
 
+        public GameObject soccerBall; // 축구공을 참조할 변수
+
+
         private bool IsCurrentDeviceMouse
         {
             get
@@ -164,7 +167,7 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
 
 
-            if (GameManager.isCtrlEnabled)
+            if (StartScene.isCtrlEnabled)
             {
                 if (ghostPrefab != null)
                 {
@@ -191,8 +194,9 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             HandleSlowMotion();
+            Replace();
 
-            if (GameManager.isCtrlEnabled){
+            if (StartScene.isCtrlEnabled){
                 // 캐릭터 상태 저장
                 SaveState();
                 // 잔상 상태 적용
@@ -439,7 +443,7 @@ namespace StarterAssets
         // 슬로우 모션 처리
         private void HandleSlowMotion()
         {
-            if (GameManager.isAltEnabled && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
+            if (StartScene.isAltEnabled && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
             {
                 Time.timeScale = _slowMotionTimeScale;
             }
@@ -512,5 +516,25 @@ namespace StarterAssets
                 }
             }
         }
+
+        private void Replace()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                _controller.enabled = false;
+
+                transform.position = Vector3.zero; // (0, 0, 0)으로 위치 설정
+                transform.rotation = Quaternion.identity; // 회전을 초기 상태로 설정
+
+                _controller.enabled = true;
+
+                if (soccerBall != null)
+                {
+                    // soccerBall.transform.position = new Vector3(-0.21f, -0.8f, -25f); // 축구공 위치 설정
+                    soccerBall.transform.position = new Vector3(0f, 1f, 2f); // 축구공 위치 설정
+                }
+            }
+        }
+        
     }
 }
