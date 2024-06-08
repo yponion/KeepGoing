@@ -5,11 +5,13 @@ public class StartScene : MonoBehaviour
 {
     public static bool isCtrlEnabled = false;
     public static bool isAltEnabled = false;
+    public static int level = 2;
 
     public void StartGameEasy()
     {
         isCtrlEnabled = true;
         isAltEnabled = true;
+        level = 0;
         LoadMainScene();
     }
 
@@ -17,6 +19,7 @@ public class StartScene : MonoBehaviour
     {
         isCtrlEnabled = false;
         isAltEnabled = true;
+        level = 1;
         LoadMainScene();
     }
 
@@ -24,6 +27,7 @@ public class StartScene : MonoBehaviour
     {
         isCtrlEnabled = false;
         isAltEnabled = false;
+        level = 2;
         LoadMainScene();
     }
 
