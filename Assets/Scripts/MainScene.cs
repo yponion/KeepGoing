@@ -11,6 +11,9 @@ public class MainScene : MonoBehaviour
     public GameObject P1;
     public GameObject P2;
 
+    public GameObject ctrl;
+    public GameObject alt;
+
     private void Start()
     {
         Cursor.visible = false;
@@ -24,6 +27,8 @@ public class MainScene : MonoBehaviour
             nomalWall.SetActive(false);
             P1.SetActive(false);
             P2.SetActive(false);
+            ctrl.SetActive(true);
+            alt.SetActive(true);
         }
         else if (StartScene.level == 1) // nomal
         {
@@ -31,6 +36,8 @@ public class MainScene : MonoBehaviour
             nomalWall.SetActive(false);
             P1.SetActive(true);
             P2.SetActive(false);
+            ctrl.SetActive(false);
+            alt.SetActive(true);
         }
         else // hard
         {
@@ -38,6 +45,8 @@ public class MainScene : MonoBehaviour
             nomalWall.SetActive(true);
             P1.SetActive(true);
             P2.SetActive(true);
+            ctrl.SetActive(false);
+            alt.SetActive(false);
         }
     }
 
