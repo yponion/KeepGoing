@@ -124,6 +124,15 @@ namespace StarterAssets
 
         public GameObject soccerBall; // 축구공을 참조할 변수
 
+        // 혹시 안 사라졌을 수도있는 튜토리얼 키 제거를 위한 변수
+        public GameObject arrows;
+        public GameObject space;
+        public GameObject p;
+        public GameObject shift;
+        public GameObject ctrl;
+        public GameObject alt;
+
+
 
         private bool IsCurrentDeviceMouse
         {
@@ -468,7 +477,7 @@ namespace StarterAssets
 
             _stateQueue.Enqueue(new CharacterState(transform.position, transform.rotation, animationParameters));
 
-            if (_stateQueue.Count > 1800) // assuming 60 updates per second, 180 updates represent 3 seconds
+            if (_stateQueue.Count > 180) // assuming 60 updates per second, 180 updates represent 3 seconds
             {
                 _stateQueue.Dequeue();
             }
@@ -476,7 +485,7 @@ namespace StarterAssets
 
         private void ApplyGhostState()
         {
-            if (_stateQueue.Count >= 1800 && _ghostAnimator != null)
+            if (_stateQueue.Count >= 180 && _ghostAnimator != null)
             {
                 CharacterState ghostState = _stateQueue.Peek();
                 _ghost.transform.position = ghostState.Position;
@@ -501,7 +510,7 @@ namespace StarterAssets
         {
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                if (_stateQueue.Count >= 1800)
+                if (_stateQueue.Count >= 180)
                 {
                     CharacterState ghostState = _stateQueue.Peek();   
 
@@ -521,6 +530,13 @@ namespace StarterAssets
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
+                arrows.SetActive(false);
+                space.SetActive(false);
+                p.SetActive(false);
+                shift.SetActive(false);
+                ctrl.SetActive(false);
+                alt.SetActive(false);
+                
                 _controller.enabled = false;
 
                 transform.position = Vector3.zero; // (0, 0, 0)으로 위치 설정
