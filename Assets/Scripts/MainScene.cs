@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using StarterAssets; // ThirdPersonController가 포함된 네임스페이스를 추가
+
 
 public class MainScene : MonoBehaviour
 {
@@ -14,12 +16,19 @@ public class MainScene : MonoBehaviour
     public GameObject ctrl;
     public GameObject alt;
 
+    private ThirdPersonController thirdPersonController;
+    private Timer timer;
+
     private void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
         buttons.SetActive(false);
+
+        // ThirdPersonController 컴포넌트를 가져옴
+        thirdPersonController = FindObjectOfType<ThirdPersonController>();
+        timer = FindObjectOfType<Timer>();
 
         if (StartScene.level == 0) // easy
         {
@@ -63,6 +72,18 @@ public class MainScene : MonoBehaviour
             buttons.SetActive(isActive);
             Cursor.visible = isActive;
             Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;
+            if (isActive)
+            {
+                Time.timeScale = 0f;
+                thirdPersonController.enabled = false;
+                timer.PauseTimer();
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                thirdPersonController.enabled = true;
+                timer.ResumeTimer();
+            }
         }
     }
 
