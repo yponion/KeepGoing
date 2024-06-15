@@ -19,7 +19,7 @@ public class TVoff : MonoBehaviour
             int targetFontSize = 500;
 
             Vector3 timerTextTargetPos = new Vector3(timerText.transform.position.x + 850f, timerText.transform.position.y - 515f, timerText.transform.position.z);
-            StartCoroutine(ChangePropertiesOverTime(tvScreen, onObject, underObject, timerText, 1f, 0f, tvScreen.transform.localScale.z, onObject.transform.position.y - 540f, onObject.transform.position.y, underObject.transform.position.y + 540f, underObject.transform.position.y, timerTextTargetPos, timerText.transform.position, targetFontSize, initialFontSize));
+            StartCoroutine(ChangePropertiesOverTime(tvScreen, onObject, underObject, timerText, 1f, 0f, tvScreen.transform.localScale.z, onObject.transform.position.y - 1080f, onObject.transform.position.y, underObject.transform.position.y + 1080f, underObject.transform.position.y, timerTextTargetPos, timerText.transform.position, targetFontSize, initialFontSize));
 
             // 타이머 멈춤
             Timer timerComponent = timerText.GetComponent<Timer>();
